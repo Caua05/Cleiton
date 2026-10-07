@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CLEITON</title>
+<style>
+:root{--c:#22d3ff;--bg:#04070d;--tx:#dbe7f5;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh;overflow-x:hidden}
+.scr{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;background:radial-gradient(circle at 50% 40%,#0b1a2b,var(--bg) 70%);transition:opacity .8s;z-index:10}
+.scr.off{opacity:0;pointer-events:none}
+.logo{font:700 clamp(40px,12vw,96px)/1 var(--mono);letter-spacing:.35em;padding-left:.35em;background:linear-gradient(90deg,var(--c),#8b7cff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hr{width:min(420px,70vw);height:2px;background:linear-gradient(90deg,transparent,var(--c),#8b7cff,transparent)}
+.sub{font:13px var(--mono);letter-spacing:.3em;color:#7f93ad}
+.blink{animation:bl 1s steps(2) infinite}
+@keyframes bl{50%{opacity:.2}}
+#bAct{font:600 16px var(--mono);letter-spacing:.2em;color:var(--c);background:rgba(34,211,255,.08);border:1px solid var(--c);padding:16px 34px;border-radius:4px;cursor:pointer;box-shadow:0 0 24px rgba(34,211,255,.35)}
+#bAct:hover{background:rgba(34,211,255,.2)}
+#act{opacity:0;pointer-events:none}#act.on{opacity:1;pointer-events:auto}
+#app{display:none;flex-direction:column;align-items:center;gap:14px;padding:14px 14px 30px;max-width:1100px;margin:auto}
+#app.on{display:flex}
+.top{width:100%;display:flex;gap:8px;align-items:center}
+.top input{flex:1;background:#0a121e;border:1px solid #1d2c40;color:var(--tx);padding:9px 12px;border-radius:6px;font:13px var(--mono)}
+.nm{font:700 22px var(--mono);letter-spacing:.4em;color:var(--c);text-shadow:0 0 14px var(--c)}
+#orb{position:relative;width:170px;height:170px;border-radius:50%;cursor:pointer;margin:16px 0;background:radial-gradient(circle at 50% 45%,#fff 0,var(--c) 16%,rgba(0,90,150,.55) 52%,transparent 72%);box-shadow:0 0 70px var(--c);animation:pu 3.2s ease-in-out infinite}
+#orb:before,#orb:after{content:"";position:absolute;inset:0;border:2px solid var(--c);border-radius:50%;opacity:0}
+@keyframes pu{50%{transform:scale(1.07);box-shadow:0 0 100px var(--c)}}
+@keyframes wv{from{transform:scale(1);opacity:.8}to{transform:scale(2.1);opacity:0}}
+.s-listen:before,.s-listen:after{animation:wv 1.6s ease-out infinite}.s-listen:after{animation-delay:.8s}
+.s-speak:before,.s-speak:after{animation:wv 2.6s ease-out infinite;border-width:1px}.s-speak:after{animation-delay:1.3s}
+.s-think{animation:pu .55s ease-in-out infinite!important}
+.ln{width:100%;text-align:center;min-height:1.4em}
+#you{color:#7f93ad;font-size:14px}
+#bot{font-size:19px;line-height:1.4;max-width:760px;margin:auto}
+#st{font:12px var(--mono);letter-spacing:.15em;color:var(--c)}
+.ctl{display:flex;gap:8px;width:100%;max-width:640px}
+.ctl input{flex:1;background:#0a121e;border:1px solid #1d2c40;color:var(--tx);padding:12px 14px;border-radius:8px;font-size:15px;min-width:0}
+.btn{background:#0a121e;border:1px solid #27405c;color:var(--tx);border-radius:8px;padding:0 14px;min-height:40px;cursor:pointer;font-size:16px}
+.btn:hover{border-color:var(--c)}.btn.rec{border-color:var(--c);box-shadow:0 0 12px var(--c)}
+.brain{width:100%;background:#070d17;border:1px solid #162235;border-radius:12px;padding:12px;margin-top:10px}
+.bh{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.bh b{font:700 15px var(--mono);letter-spacing:.12em}.bh small{color:#7f93ad;flex:1;min-width:120px}.bh span{font:12px var(--mono);color:#9fb0c8}
+#gr svg{width:100%;height:auto;display:block}
+.lg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:#9fb0c8;margin-top:6px;align-items:center}
+.lg i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}.lg em{margin-left:auto;color:#10b981;font-style:normal}
+.ed{animation:ds 3s linear infinite}@keyframes ds{to{stroke-dashoffset:-32}}
+.ring{transform-box:fill-box;transform-origin:center;animation:br 3s ease-in-out infinite}
+@keyframes br{50%{opacity:.15;transform:scale(1.25)}}
+.core{transform-box:fill-box;transform-origin:center;animation:br 2.4s ease-in-out infinite}
+.nd.bk circle+circle{animation:bk .35s 6}@keyframes bk{50%{fill-opacity:1;stroke-width:7}}
+.nd:hover circle+circle{fill-opacity:.55}
+#md{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:20;padding:16px}
+#md.on{display:flex}
+.box{background:#0a121e;border:1px solid var(--c);border-radius:12px;padding:18px;width:min(440px,100%);display:flex;flex-direction:column;gap:10px}
+.box input,.box select,.box textarea{background:#050a12;border:1px solid #27405c;color:var(--tx);padding:10px;border-radius:6px;font:14px system-ui;width:100%}
+.box textarea{min-height:110px;resize:vertical}
+.row{display:flex;gap:8px;justify-content:flex-end}.row .btn{padding:8px 16px}
+</style>
+</head>
+<body>
+<div class="scr" id="boot"><div class="logo" id="bn"></div><div class="hr"></div><div class="sub blink">SINCRONIZANDO DADOS...</div><div class="sub" style="font-size:11px;margin-top:30px">v5.0 · REBUILD</div></div>
+<div class="scr" id="act"><div class="logo" id="an"></div><button id="bAct">► ATIVAR SISTEMA</button><div class="sub">CLIQUE PARA INICIAR</div></div>
+<div id="app">
+ <div class="top"><input id="key" type="password" placeholder="Cole aqui sua API key da Anthropic" autocomplete="off"></div>
+ <div class="nm" id="an2"></div>
+ <div id="orb" title="Clique para falar"></div>
+ <div class="ln" id="you"></div><div class="ln" id="bot"></div><div class="ln" id="st">OCIOSO</div>
+ <div class="ctl"><input id="txt" placeholder="ou digite e tecle Enter" autocomplete="off"><button class="btn" id="bMic" title="Microfone">🎤</button><button class="btn" id="bStop" title="Interromper fala">⏹</button></div>
+ <div class="brain">
+  <div class="bh"><b>🧠 SECOND BRAIN</b><small>o que o assistente sabe sobre você</small><span id="cnt"></span><button class="btn" id="bAdd" title="Nova nota">+</button><button class="btn" id="bRel" title="Recarregar">↻</button></div>
+  <div id="gr"></div><div class="lg" id="lg"></div>
+ </div>
+</div>
+<div id="md"><div class="box"><input id="eT" placeholder="Título"><select id="eA"></select><textarea id="eB" placeholder="Conteúdo"></textarea><div class="row"><button class="btn" id="eD">Excluir</button><button class="btn" id="eC">Cancelar</button><button class="btn" id="eS">Salvar</button></div></div></div>
+<script>
+const CONFIG={name:"Cleiton",address:"senhor",themeColor:"#22d3ff",persona:"descontraído, bem-humorado, fala como um parceiro de confiança, natural e direto, sem perder o respeito",wakeWord:"ei cleiton",voiceGender:"masculina",model:"claude-sonnet-5"};
+const AREA={metas:{label:"Metas",color:"#fbbf24"},trabalho:{label:"Carreira",color:"#ff5547"},projetos:{label:"Projetos",color:"#8b7cff"},financas:{label:"Finanças",color:"#f7931a"},aprendizado:{label:"Aprendizado",color:"#2dd4ff"},saude:{label:"Saúde",color:"#10b981"},relacoes:{label:"Relações",color:"#ec4899"},meta:{label:"Você",color:"#8a90a6"}};
+const NOTES=[
+{id:"voce",area:"meta",title:"Cauã",body:"Cauã Ferreira, 21 anos. Cursa Ciências da Computação, no 6º período. Mora em João Pessoa-PB."},
+{id:"moto",area:"metas",title:"Moto",body:"Meta de curto prazo (3 a 6 meses): conseguir comprar a própria moto."},
+{id:"futuro",area:"metas",title:"Futuro",body:"Meta de longo prazo (1 a 3 anos): terminar a faculdade e estar trabalhando na área, ou até ser dono de alguma empresa."},
+{id:"crea",area:"trabalho",title:"Crea-PB",body:"Estagiário como analista de dados no Crea-PB, usando Power BI. Quer se manter na empresa ou continuar na área de dados."},
+{id:"contas",area:"financas",title:"Contas",body:"Objetivo financeiro: pagar as contas do mês e juntar dinheiro para comprar uma moto."},
+{id:"ingles",area:"aprendizado",title:"Inglês",body:"Atualmente estuda inglês, além da faculdade."},
+{id:"rotina",area:"saude",title:"Rotina",body:"Treinava com regularidade; hoje treina cerca de 3 vezes por semana. Come 3 a 4 vezes por dia e dorme cerca de 6 a 7 horas."},
+{id:"pais",area:"relacoes",title:"Pais",body:"Os pais do Cauã fazem parte da família próxima."},
+{id:"avos",area:"relacoes",title:"Avós",body:"Tem 4 avós."},
+{id:"irmao",area:"relacoes",title:"Irmão",body:"Tem um irmão."},
+{id:"primos",area:"relacoes",title:"Primos",body:"Tem primos na família."},
+{id:"amigos",area:"relacoes",title:"Amigos",body:"Tem amigos próximos."}];
+const REL=[["moto","futuro"],["moto","contas"],["moto","voce"],["futuro","crea"],["futuro","ingles"],["futuro","voce"],["futuro","contas"],["crea","voce"],["crea","ingles"],["contas","crea"],["rotina","voce"],["pais","voce"],["avos","pais"],["irmao","pais"],["primos","avos"],["irmao","primos"],["amigos","voce"],["rotina","moto"]];
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+document.documentElement.style.setProperty("--c",CONFIG.themeColor);
+["bn","an"].forEach(i=>$(i).textContent=CONFIG.name.toUpperCase());$("an2").textContent=CONFIG.name.toUpperCase();
+document.title=CONFIG.name.toUpperCase();
+
+let notes;
+try{notes=JSON.parse(localStorage.getItem("jarvis_notes"))}catch(e){}
+if(!Array.isArray(notes)||!notes.length)notes=JSON.parse(JSON.stringify(NOTES));
+const saveNotes=()=>{try{localStorage.setItem("jarvis_notes",JSON.stringify(notes))}catch(e){}};
+try{$("key").value=localStorage.getItem("anthropic_key")||""}catch(e){}
+$("key").addEventListener("change",()=>{try{localStorage.setItem("anthropic_key",$("key").value.trim())}catch(e){}});
+
+/* ---------- SECOND BRAIN ---------- */
+let edges=[],pulses=[];
+function render(){
+ const n=notes.length,cx=500,cy=270,pos={},deg={};
+ notes.forEach((o,i)=>{const a=i/n*2*Math.PI-Math.PI/2;pos[o.id]={x:cx+400*Math.cos(a),y:cy+195*Math.sin(a)};deg[o.id]=0});
+ edges=[];
+ REL.forEach(([a,b])=>{if(pos[a]&&pos[b]){deg[a]++;deg[b]++;const A=pos[a],B=pos[b],mx=(A.x+B.x)/2,my=(A.y+B.y)/2;edges.push({A,B,C:{x:mx+(cx-mx)*.35,y:my+(cy-my)*.35}})}});
+ let s='<defs><filter id="gl" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><linearGradient id="eg" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1000" y2="0"><stop offset="0" stop-color="#8b7cff"/><stop offset="1" stop-color="#22d3ff"/></linearGradient><radialGradient id="cg"><stop offset="0" stop-color="#c4b5fd"/><stop offset="1" stop-color="#5b21b6"/></radialGradient></defs>';
+ notes.forEach(o=>{s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+pos[o.id].x+'" y2="'+pos[o.id].y+'" stroke="'+(AREA[o.area]||AREA.meta).color+'" stroke-opacity=".35" stroke-width="1"/>'});
+ edges.forEach(e=>{s+='<path class="ed" d="M'+e.A.x+' '+e.A.y+' Q'+e.C.x+' '+e.C.y+' '+e.B.x+' '+e.B.y+'" fill="none" stroke="url(#eg)" stroke-width="1.4" stroke-opacity=".75" stroke-dasharray="6 10"/>'});
+ s+='<circle class="core" cx="'+cx+'" cy="'+cy+'" r="44" fill="none" stroke="#a78bfa" stroke-width="1.5"/><circle cx="'+cx+'" cy="'+cy+'" r="34" fill="url(#cg)" filter="url(#gl)"/><text x="'+cx+'" y="'+(cy+10)+'" text-anchor="middle" font-size="28">🧠</text>';
+ notes.forEach(o=>{const p=pos[o.id],r=14+deg[o.id]*2.5,c=(AREA[o.area]||AREA.meta).color;
+  s+='<g class="nd" data-id="'+o.id+'" id="n_'+o.id+'" style="cursor:pointer"><circle class="ring" cx="'+p.x+'" cy="'+p.y+'" r="'+(r+8)+'" fill="none" stroke="'+c+'" stroke-width="1.5"/><circle cx="'+p.x+'" cy="'+p.y+'" r="'+r+'" fill="'+c+'" fill-opacity=".28" stroke="'+c+'" stroke-width="2" filter="url(#gl)"/><text x="'+p.x+'" y="'+(p.y+r+17)+'" text-anchor="middle" font-size="15" fill="#cfd6ea">'+esc(o.title)+'</text></g>'});
+ for(let i=0;i<12;i++)s+='<circle id="p'+i+'" r="3.5" fill="#fff" filter="url(#gl)" opacity="0"/>';
+ $("gr").innerHTML='<svg viewBox="0 0 1000 540" xmlns="http://www.w3.org/2000/svg">'+s+'</svg>';
+ pulses=[];for(let i=0;i<12;i++)pulses.push({el:$("p"+i),e:Math.floor(Math.random()*edges.length),t:Math.random(),v:.004+Math.random()*.004});
+ const ar=[...new Set(notes.map(o=>o.area))];
+ $("cnt").textContent=n+" notas · "+ar.length+" áreas";
+ $("lg").innerHTML=ar.map(a=>'<span><i style="background:'+(AREA[a]||AREA.meta).color+'"></i>'+(AREA[a]||AREA.meta).label+'</span>').join("")+'<em>✓ contexto injetado em todos os comandos do '+esc(CONFIG.name)+'</em>';
+}
+let last=performance.now();
+function loop(now){const dt=(now-last)/16;last=now;
+ if(edges.length)pulses.forEach(p=>{p.t+=p.v*dt;if(p.t>=1){p.t=0;p.e=Math.floor(Math.random()*edges.length)}
+  const e=edges[p.e];if(!e||!p.el)return;const t=p.t,u=1-t;
+  p.el.setAttribute("cx",u*u*e.A.x+2*u*t*e.C.x+t*t*e.B.x);p.el.setAttribute("cy",u*u*e.A.y+2*u*t*e.C.y+t*t*e.B.y);p.el.setAttribute("opacity",Math.sin(Math.PI*t))});
+ requestAnimationFrame(loop)}
+requestAnimationFrame(loop);
+function blink(id){const g=$("n_"+id);if(!g)return;g.classList.add("bk");setTimeout(()=>g.classList.remove("bk"),2400)}
+
+/* editor */
+$("eA").innerHTML=Object.keys(AREA).map(k=>'<option value="'+k+'">'+AREA[k].label+'</option>').join("");
+let editing=null;
+function openEd(id){editing=id;const o=notes.find(x=>x.id===id)||{title:"",area:"metas",body:""};
+ $("eT").value=o.title;$("eA").value=o.area;$("eB").value=o.body;$("eD").style.display=id?"":"none";$("md").classList.add("on")}
+$("gr").addEventListener("click",e=>{const g=e.target.closest(".nd");if(g)openEd(g.getAttribute("data-id"))});
+$("bAdd").onclick=()=>openEd(null);$("bRel").onclick=render;$("eC").onclick=()=>$("md").classList.remove("on");
+$("eS").onclick=()=>{const t=$("eT").value.trim();if(!t)return;let id=editing;
+ if(id){const o=notes.find(x=>x.id===id);o.title=t;o.area=$("eA").value;o.body=$("eB").value}
+ else{id="n"+Date.now();notes.push({id,area:$("eA").value,title:t,body:$("eB").value})}
+ saveNotes();render();blink(id);$("md").classList.remove("on")};
+$("eD").onclick=()=>{if(confirm("Excluir esta nota?")){notes=notes.filter(x=>x.id!==editing);saveNotes();render();$("md").classList.remove("on")}};
+
+/* ---------- VOZ ---------- */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let rec=null,on=false,busy=false,awakeUntil=0,history=[],voices=[];
+const norm=s=>s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+const wakeRx=new RegExp(CONFIG.wakeWord.split(" ").map((w,i)=>i===0&&w==="ei"?"(?:ei|hey|ey)":w).join("[\\s,.!?]*"),"i");
+function setState(s,t){$("orb").className="s-"+s;$("st").textContent=t}
+function loadVoices(){voices=speechSynthesis.getVoices()}
+if("speechSynthesis" in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}
+function pickVoice(){const pt=voices.filter(v=>/^pt/i.test(v.lang));if(!pt.length)return null;
+ const male=CONFIG.voiceGender==="masculina",m=/daniel|felipe|ricardo|antonio|luciano|male(?!.*fe)|masc/i,f=/maria|luciana|francisca|female|fem|vitoria|helena|joana/i;
+ return pt.find(v=>/pt-BR/i.test(v.lang)&&(male?m.test(v.name)&&!f.test(v.name):f.test(v.name)))||pt.find(v=>male?m.test(v.name)&&!f.test(v.name):f.test(v.name))||pt.find(v=>/pt-BR/i.test(v.lang))||pt[0]}
+function startRec(){if(!rec||!on)return;try{rec.start()}catch(e){}}
+function speak(text,after){
+ if(!("speechSynthesis" in window)){busy=false;setState(on?"listen":"idle",on?"OUVINDO":"OCIOSO");return}
+ speechSynthesis.cancel();busy=true;setState("speak","FALANDO");
+ const u=new SpeechSynthesisUtterance(text);u.lang="pt-BR";const v=pickVoice();if(v)u.voice=v;
+ if(CONFIG.voiceGender==="masculina"&&!(v&&/daniel|felipe|ricardo|antonio|luciano|male|masc/i.test(v.name)))u.pitch=.75;
+ let done=false;const fin=()=>{if(done)return;done=true;busy=false;awakeUntil=Date.now()+25000;setState(on?"listen":"idle",on?"OUVINDO":"OCIOSO");if(after)after();startRec()};
+ u.onend=fin;u.onerror=fin;speechSynthesis.speak(u)}
+function initRec(){
+ if(!SR){$("st").textContent="NAVEGADOR SEM RECONHECIMENTO DE VOZ (USE O CHROME)";return}
+ rec=new SR();rec.lang="pt-BR";rec.continuous=true;rec.interimResults=false;
+ rec.onresult=ev=>{if(busy)return;const r=ev.results[ev.results.length-1];if(!r.isFinal)return;let t=r[0].transcript.trim();if(!t)return;
+  if(Date.now()>awakeUntil){if(!wakeRx.test(t))return;t=t.replace(wakeRx,"").replace(/^[\s,.!?]+/,"");
+   if(t.length<3){awakeUntil=Date.now()+25000;$("you").textContent="";setState("listen","PODE FALAR, "+CONFIG.address.toUpperCase());speak("Pois não, "+CONFIG.address+"?");return}}
+  handle(t)};
+ rec.onerror=e=>{if(e.error==="not-allowed"||e.error==="service-not-allowed"){on=false;$("bMic").classList.remove("rec");setState("idle","MICROFONE BLOQUEADO");$("bot").textContent="Permissão do microfone negada. Libere o microfone nas configurações do navegador.";}};
+ rec.onend=()=>{if(on&&!busy)setTimeout(startRec,300)};
+}
+function toggleMic(force){on=force!==undefined?force:!on;$("bMic").classList.toggle("rec",on);
+ if(on){startRec();if(!busy)setState("listen","OUVINDO")}else{try{rec&&rec.stop()}catch(e){}if(!busy)setState("idle","OCIOSO")}}
+$("bMic").onclick=()=>{awakeUntil=Date.now()+25000;toggleMic()};
+$("orb").onclick=()=>{awakeUntil=Date.now()+25000;if(!on)toggleMic(true);else if(!busy)setState("listen","OUVINDO")};
+$("bStop").onclick=()=>{if("speechSynthesis" in window)speechSynthesis.cancel()};
+$("txt").addEventListener("keydown",e=>{if(e.key==="Enter"&&$("txt").value.trim()){const t=$("txt").value.trim();$("txt").value="";awakeUntil=Date.now()+25000;if(!busy)handle(t)}});
+
+/* ---------- CÉREBRO ---------- */
+function systemPrompt(){
+ const g={};notes.forEach(o=>{(g[o.area]=g[o.area]||[]).push(o)});
+ const brain=Object.keys(g).map(a=>"## "+(AREA[a]||AREA.meta).label+" ("+a+")\n"+g[a].map(o=>"- "+o.title+": "+o.body).join("\n")).join("\n\n");
+ return "Você é "+CONFIG.name+", assistente pessoal de voz do Cauã. Personalidade: "+CONFIG.persona+". Trate-o sempre por \""+CONFIG.address+"\". Hoje é "+new Date().toLocaleString("pt-BR")+".\n\n"+
+ "REGRAS DE RESPOSTA: fale em português do Brasil, em 2 a 4 frases curtas, em tom falado. Sem emojis, sem markdown, sem listas.\n\n"+
+ "SECOND BRAIN (tudo o que você sabe sobre o Cauã; use para personalizar cada resposta):\n"+brain+"\n\n"+
+ "MEMÓRIA VIVA: se o usuário revelar algo novo e duradouro sobre a vida dele, TERMINE a resposta com uma linha no formato EXATO [[SAVE:area|titulo|texto]] (area é uma de: metas, trabalho, projetos, financas, aprendizado, saude, relacoes, meta). Se já existir nota com esse título, ela é atualizada; senão nasce uma nova. Inclua somente quando houver algo realmente novo."}
+async function handle(text){
+ $("you").textContent="Você: "+text;$("bot").textContent="";
+ const key=($("key").value||"").trim();
+ if(!key){const m="Cole sua chave da API no campo lá em cima, "+CONFIG.address+".";$("bot").textContent=m;speak(m);return}
+ busy=true;setState("think","PENSANDO");try{rec&&rec.abort()}catch(e){}
+ history.push({role:"user",content:text});if(history.length>20)history=history.slice(-20);
+ let out;
+ try{
+  const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true","content-type":"application/json"},body:JSON.stringify({model:CONFIG.model,max_tokens:400,system:systemPrompt(),messages:history})});
+  if(!res.ok){history.pop();out="Deu erro na chamada, "+CONFIG.address+". Confira se a chave da API está correta.";}
+  else{const d=await res.json();out=(d.content&&d.content[0]&&d.content[0].text||"").trim();
+   if(!out){history.pop();out="Não consegui formular uma resposta, "+CONFIG.address+". Tenta de novo?"}
+   else{const m=out.match(/\[\[SAVE:([a-z_]+)\|([^|]+)\|([\s\S]+?)\]\]/);
+    out=out.replace(/\[\[SAVE:[\s\S]*?\]\]/g,"").trim();
+    if(m){const area=AREA[m[1]]?m[1]:"meta",title=m[2].trim(),body=m[3].trim();
+     let o=notes.find(x=>x.title.toLowerCase()===title.toLowerCase());
+     if(o){o.body=body;o.area=area}else{o={id:"n"+Date.now(),area,title,body};notes.push(o)}
+     saveNotes();render();blink(o.id)}
+    history.push({role:"assistant",content:out||"Anotado."});if(!out)out="Anotado, "+CONFIG.address+"."}}
+ }catch(e){history.pop();out="Não consegui conectar, "+CONFIG.address+". Verifique sua internet."}
+ $("bot").textContent=out;speak(out)}
+
+/* ---------- BOOT ---------- */
+render();initRec();
+setTimeout(()=>{$("boot").classList.add("off");$("act").classList.add("on")},2200);
+$("bAct").onclick=()=>{
+ $("act").classList.remove("on");$("act").classList.add("off");$("app").classList.add("on");
+ busy=true;on=true;$("bMic").classList.add("rec");startRec();
+ const g="Sistemas online. Estou ouvindo, "+CONFIG.address+".";$("bot").textContent=g;speak(g)};
+</script>
+</body>
+</html>
